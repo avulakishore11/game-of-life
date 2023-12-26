@@ -31,7 +31,7 @@
 		    <id>nexusRepo</id>
 		    <url>http://3.15.39.127:8081/repository/kishore-release/</url>
 		</repository>
-  	</distributionManagement>
+    </distributionManagement>
     <scm>
         <connection>scm:git:git@github.com:${github.account}/game-of-life.git</connection>
         <developerConnection>scm:git:git@github.com:${github.account}/game-of-life.git</developerConnection>
