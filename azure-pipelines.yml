@@ -7,13 +7,18 @@ trigger:
 - master
 
 pool:
-  name: buildagent1
+  name: 'webgaot-pool'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: 
+    jobs:
+    - job: 
+      steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'webgoat-dcr'
+          repository: 'game-of-life'
+          command: 'build'
+          Dockerfile: '**/dockerfile'
+          addPipelineData: false
+          addBaseImageData: false
