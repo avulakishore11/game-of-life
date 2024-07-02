@@ -1,5 +1,5 @@
 # Base image to build and publsih the artifact
-FROM dotnet.io/maven:3.9.8-eclipse-temurin-8
+FROM maven:3.9.8-eclipse-temurin-8
 
 # sets up working directory
 
