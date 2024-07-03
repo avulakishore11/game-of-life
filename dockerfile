@@ -21,7 +21,7 @@ RUN chgrp -R 0 /home/azureuser && \
     chmod -R g=u /home/azureuser
 
 # Copy the jar file from the build stage
-COPY --from=builder /app/target/*.jar /home/azureuser/
+COPY --from=builder /app/gameoflife-web/target/gameoflife.war /home/azureuser
 
 # Expose the application port
 EXPOSE 8080
@@ -30,4 +30,4 @@ EXPOSE 8080
 USER azureuser
 
 # Run the application
-CMD ["java", "-jar", "/home/azureuser/target/*.jar"]
+CMD ["java", "-jar", "/home/azureuser/target/*.war"]
