@@ -17,8 +17,8 @@ stages:
       - task: Docker@2
         inputs:
           containerRegistry: 'webgoat-dcr'
-          repository: 'game-of-life'
-          command: 'buildPush'
-          Dockerfile: '**/dockerfile'
+          repository: 'gameof-life-webapp'
+          command: 'buildAndPush'
+          Dockerfile: '**/Dockerfile'
           addPipelineData: false
           addBaseImageData: false
