@@ -7,18 +7,38 @@ trigger:
 - master
 
 pool:
-  name: 'webgaot-pool'
+  name: 'k8s-pool'
+  demands:
+  - maven
+
+#stages:
+ # - stage: 
+  #  jobs:
+   # - job: 
+    #  steps:
+     # - task: Docker@2
+      #  inputs:
+       #   containerRegistry: 'webgoat-dcr'
+        #  repository: 'gameof-life-webapp'
+         # command: 'buildAndPush'
+          #Dockerfile: '**/Dockerfile'
+          #ddPipelineData: false
+          #dBaseImageData: false
 
 stages:
   - stage: 
     jobs:
     - job: 
       steps:
-      - task: Docker@2
+    
+      - task: Maven@4
         inputs:
-          containerRegistry: 'webgoat-dcr'
-          repository: 'gameof-life-webapp'
-          command: 'buildAndPush'
-          Dockerfile: '**/Dockerfile'
-          addPipelineData: false
-          addBaseImageData: false
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+    
