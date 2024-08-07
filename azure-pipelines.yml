@@ -55,23 +55,25 @@ stages:
     dependsOn: Build
     jobs:
     - deployment: DeploymentJob
-      environment: 'Dev'
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - task: DownloadPipelineArtifact@2
-              displayName: "Download Build Artifacts"
-              inputs:
-                buildType: 'current'
-                artifactName: 'demo'
-                path: '$(Pipeline.Workspace)/demo'
+      environment: 
+        name: 'Dev'
+        resourceName: 'applruser Build service(aptnaidu8260265)'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: DownloadPipelineArtifact@2
+                displayName: "Download Build Artifacts"
+                inputs:
+                  buildType: 'current'
+                  artifactName: 'groot-artifact'
+                  path: '$(Pipeline.Workspace)/groot_artifact'
 
-            - task: AzureRmWebAppDeployment@4
-              inputs:
-                ConnectionType: 'AzureRM'
-                azureSubscription: 'svc-coonection1'
-                appType: 'webAppLinux'
-                WebAppName: 'nikeorders'
-                packageForLinux: '$(Pipeline.Workspace)/demo/**/*.war'
-                RuntimeStack: 'JBOSSEAP|7-java8'
+              - task: AzureRmWebAppDeployment@4
+                inputs:
+                  ConnectionType: 'AzureRM'
+                  azureSubscription: 'svc-connection1'
+                  appType: 'webAppLinux'
+                  WebAppName: 'nikeorders'
+                  packageForLinux: '$(Pipeline.Workspace)/groot_artifact/**/*.war'
+                  RuntimeStack: 'JBOSSEAP|7-java8'
