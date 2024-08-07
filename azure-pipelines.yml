@@ -26,9 +26,9 @@ pool:
           #dBaseImageData: false
 
 stages:
-  - stage: 
+  - stage: build
     jobs:
-    - job: 
+    - job: Build
       steps:
     
       - task: Maven@4
@@ -41,4 +41,37 @@ stages:
           mavenAuthenticateFeed: false
           effectivePomSkip: false
           sonarQubeRunAnalysis: false
-    
+      - task: CopyFiles@2
+        inputs:
+          Contents: '**/target/gameoflife.war'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'demo'
+          publishLocation: 'Container'
+
+  - stage: Deployment
+    dependsOn: Build
+    jobs:
+    - deployment: DeploymentJob
+      environment: 'Dev'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadPipelineArtifact@2
+              displayName: "Download Build Artifacts"
+              inputs:
+                buildType: 'current'
+                artifactName: 'demo'
+                path: '$(Pipeline.Workspace)/demo'
+
+            - task: AzureRmWebAppDeployment@4
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: 'svc-coonection1'
+                appType: 'webAppLinux'
+                WebAppName: 'nikeorders'
+                packageForLinux: '$(Pipeline.Workspace)/demo/**/*.war'
+                RuntimeStack: 'JBOSSEAP|7-java8'
