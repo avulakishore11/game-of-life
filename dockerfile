@@ -14,20 +14,13 @@ RUN mvn clean package
 FROM eclipse-temurin:8-jre
 
 # Set the working directory
-WORKDIR /home/azureuser
+WORKDIR /app
 
-# Set permissions for the azureuser
-RUN chgrp -R 0 /home/azureuser && \
-    chmod -R g=u /home/azureuser
-
-# Copy the jar file from the build stage
-COPY --from=builder /app/gameoflife-web/target/gameoflife.war /home/azureuser
+# Copy the war file from the build stage
+COPY --from=builder /app/gameoflife-web/target/gameoflife.war .
 
 # Expose the application port
 EXPOSE 8080
 
-# Change to the azureuser
-USER azureuser
-
 # Run the application
-CMD ["java", "-jar", "/home/azureuser/target/*.war"]
+CMD ["java", "-jar", "gameoflife.war"]
